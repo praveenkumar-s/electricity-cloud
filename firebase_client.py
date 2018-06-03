@@ -13,7 +13,8 @@ class firebase_client:
         }
         self.firebase = pyrebase.initialize_app(config)
         self.firebase.auth()
-
+    def getdb(self):
+        return self.firebase.database()
 
     def putvalue(self, child, data):
         db= self.firebase.database()
