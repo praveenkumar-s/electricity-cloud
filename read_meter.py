@@ -19,7 +19,7 @@ def cbf(gpio, level, tick):
     wattage = 3600/(delta.total_seconds() * 1200)
     global counter
     if(counter>config.config['firebase_update_interval']):
-        subprocess.Popen(["firebase_client.py","realtime_data",str(wattage)],stdin=None, stdout=None, stderr=None, close_fds=True)
+        subprocess.Popen(["python","firebase_client.py","realtime_data",str(wattage)],stdin=None, stdout=None, stderr=None, close_fds=True)
         counter=0
     counter= counter+1
 
