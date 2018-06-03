@@ -1,4 +1,6 @@
 import pyrebase
+import sys
+
 
 class firebase_client:
     def __init__(self):        
@@ -18,3 +20,9 @@ class firebase_client:
         db.child(child).set(data)
 
 
+def main(argv):
+    x= firebase_client()
+    x.putvalue(argv[1],argv[2])
+
+if __name__ == '__main__':
+    main(sys.argv[:])

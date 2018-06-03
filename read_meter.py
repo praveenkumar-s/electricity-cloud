@@ -1,9 +1,8 @@
 import time
 import pigpio
-import firebase_client
 from datetime import datetime
 import config
-
+import subprocess
 
 timediff=datetime.now()
 counter=0
@@ -20,10 +19,7 @@ def cbf(gpio, level, tick):
     wattage = 3600/(delta.total_seconds() * 1200)
     global counter
     if(counter>config.config['firebase_update_interval']):
-        fbc= firebase_client.firebase_client()
-        fbc.putvalue("realtime_data",wattage)
-        print("Updated Realtime usage to Cloud")
-        fbc=None
+        subprocess.Popen(["firebase_client.py","realtime_data",wattage],stdin=None, stdout=None, stderr=None, close_fds=True)
         counter=0
     counter= counter+1
 
