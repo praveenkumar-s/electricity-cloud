@@ -19,7 +19,7 @@ def cbf(gpio, level, tick):
     global counter
     if(counter>10):
         fbc= firebase_client.firebase_client()
-        fbc.putvalue("realtime_data","x")
+        fbc.putvalue("realtime_data",wattage)
         print("Updated Realtime usage to Cloud")
         fbc=None
         counter=0
