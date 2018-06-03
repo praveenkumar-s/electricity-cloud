@@ -18,4 +18,3 @@ class firebase_client:
         db.child(child).set(data)
 
 
-
