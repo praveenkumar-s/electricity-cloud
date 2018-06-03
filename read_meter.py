@@ -15,7 +15,7 @@ def cbf(gpio, level, tick):
     global timediff
     delta=datetime.now() - timediff
     timediff= datetime.now()
-    wattage = 3600/(delta.second * 1200)
+    wattage = 3600/(delta.total_seconds * 1200)
     global counter
     if(counter>10):
         fbc= firebase_client.firebase_client()
