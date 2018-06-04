@@ -38,6 +38,14 @@ def cbf(gpio, level, tick):
         counter=0
     counter= counter+1
 
+def blacklist(in_str,characters,safechar):
+    for items in characters:
+        in_str=in_str.replace(items,safechar)
+    return in_str
+    
+    
+    
+    
 def upload_imp():
     global IMP
     try:
