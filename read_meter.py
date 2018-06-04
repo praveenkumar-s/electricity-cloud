@@ -49,7 +49,7 @@ def blacklist(in_str,characters,safechar):
 def upload_imp():
     global IMP
     try:
-        subprocess.Popen(["python","firebase_client.py",str(datetime.now()),str(IMP)],stdin=None, stdout=None, stderr=None, close_fds=True)
+        subprocess.Popen(["python","firebase_client.py",blacklist(str(datetime.now()),[':',' ','-','.'],'_'),str(IMP)],stdin=None, stdout=None, stderr=None, close_fds=True)
         IMP=0
         print("Uploaded Ticks data to cloud @ {0}".format(str(datetime.now())))
     except Exception as e:
