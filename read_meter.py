@@ -45,7 +45,7 @@ def upload_imp():
         IMP=0
         print("Uploaded Ticks data to cloud @ {0}".format(str(datetime.now())))
     except:
-        pass
+        print("Exception While uploading IMP")
 
 GPIO=15
 GLITCH=500
