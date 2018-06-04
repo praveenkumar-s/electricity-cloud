@@ -41,7 +41,7 @@ def cbf(gpio, level, tick):
 def upload_imp():
     global IMP
     try:
-        subprocess.Popen(["python","firebase_client.py",str(datetime.now()),IMP],stdin=None, stdout=None, stderr=None, close_fds=True)
+        subprocess.Popen(["python","firebase_client.py",str(datetime.now()),str(IMP)],stdin=None, stdout=None, stderr=None, close_fds=True)
         IMP=0
         print("Uploaded Ticks data to cloud @ {0}".format(str(datetime.now())))
     except Exception as e:
