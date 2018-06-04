@@ -44,8 +44,9 @@ def upload_imp():
         subprocess.Popen(["python","firebase_client.py",str(datetime.now()),IMP],stdin=None, stdout=None, stderr=None, close_fds=True)
         IMP=0
         print("Uploaded Ticks data to cloud @ {0}".format(str(datetime.now())))
-    except:
+    except Exception as e:
         print("Exception While uploading IMP")
+        print(e.message())
 
 GPIO=15
 GLITCH=500
