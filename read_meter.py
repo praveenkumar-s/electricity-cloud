@@ -3,15 +3,30 @@ import pigpio
 from datetime import datetime
 import config
 import subprocess
+from datetime import datetime
+import os
+
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+
+try:
+    import asyncio
+except ImportError:
+    import trollius as asyncio
+
+
+
+
 
 timediff=datetime.now()
 counter=0
-
+IMP=0
 
 # 1200 imp / hour 
 # current wattage usage = 3600/ (time interval * 1200)
 #call back function, that gets triggered every time there is a pulse
 def cbf(gpio, level, tick):
+    global IMP
+    IMP=IMP+1
     print("{:2d}->{} at {}".format(gpio, level, tick))
     global timediff
     delta=datetime.now() - timediff
@@ -22,6 +37,15 @@ def cbf(gpio, level, tick):
         subprocess.Popen(["python","firebase_client.py","realtime_data",str(wattage)],stdin=None, stdout=None, stderr=None, close_fds=True)
         counter=0
     counter= counter+1
+
+def upload_imp():
+    global IMP
+    try:
+        subprocess.Popen(["python","firebase_client.py",str(datetime.now()),IMP],stdin=None, stdout=None, stderr=None, close_fds=True)
+        IMP=0
+        print("Uploaded Ticks data to cloud @ {0}".format(str(datetime.now())))
+    except:
+        pass
 
 GPIO=15
 GLITCH=500
@@ -39,5 +63,13 @@ pi.set_glitch_filter(GPIO, GLITCH)
 
 cb = pi.callback(GPIO, pigpio.FALLING_EDGE, cbf)
 
-while True:
+scheduler = AsyncIOScheduler()
+scheduler.add_job(upload_imp, 'interval', seconds=config.config['IMP_upload_interval'])
+scheduler.start()
+print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'))
+
+# Execution will block here until Ctrl+C (Ctrl+Break on Windows) is pressed.
+try:
+    asyncio.get_event_loop().run_forever()
+except (KeyboardInterrupt, SystemExit):
     pass
