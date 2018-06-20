@@ -13,7 +13,9 @@ def stream_handler(message):
     data=message["data"]
     mylcd.lcd_clear()
     mylcd.lcd_display_string('CW: {0}'.format(data))
-
-fbc=firebase_client.firebase_client()
-db= fbc.getdb()
-my_stream = db.child("realtime_data").stream(stream_handler)
+try:
+    fbc=firebase_client.firebase_client()
+    db= fbc.getdb()
+    my_stream = db.child("realtime_data").stream(stream_handler)
+except:
+    pass
