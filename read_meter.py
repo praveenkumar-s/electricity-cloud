@@ -5,7 +5,7 @@ import config
 import subprocess
 from datetime import datetime
 import os
-
+import firebase_client
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 try:
@@ -48,6 +48,10 @@ def blacklist(in_str,characters,safechar):
     
 def upload_imp():
     global IMP
+
+    #try to get data for the existing month:
+
+
     try:
         subprocess.Popen(["python","firebase_client.py",blacklist(str(datetime.now()),[':',' ','-','.'],'_'),str(IMP)],stdin=None, stdout=None, stderr=None, close_fds=True)
         IMP=0
