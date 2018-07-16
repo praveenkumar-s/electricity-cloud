@@ -5,9 +5,10 @@ import config
 import subprocess
 from datetime import datetime
 import os
-import firebase_client
+from Firebase_Client_Library import firebase_client
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-
+import data_model
+import json
 try:
     import asyncio
 except ImportError:
@@ -50,10 +51,18 @@ def upload_imp():
     global IMP
 
     #try to get data for the existing month:
-
+    month= datetime.now().month
+    year=datetime.now().year
+    fb=firebase_client()
+    data=fb.getdata(str(year)+'_'+str(month))
+    if(data is not None):
+        data=json.loads(data)
+        data_to_upload=data_model.data_fabricate(data,IMP)
+    else:
+        data_to_upload=data_model.new_data_fabricate(IMP)
 
     try:
-        subprocess.Popen(["python","firebase_client.py",blacklist(str(datetime.now()),[':',' ','-','.'],'_'),str(IMP)],stdin=None, stdout=None, stderr=None, close_fds=True)
+        subprocess.Popen(["python","firebase_client.py",str(year)+'_'+str(month),json.dumps(data_to_upload)],stdin=None, stdout=None, stderr=None, close_fds=True)
         IMP=0
         print("Uploaded Ticks data to cloud @ {0}".format(str(datetime.now())))
     except Exception as e:

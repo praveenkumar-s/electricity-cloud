@@ -22,6 +22,6 @@ class firebase_client:
     def getdata(self,tag):
         db= self.firebase.database()
         try:
-            return db.child(tag)
+            return db.child(tag).get().val()
         except:
             return None
